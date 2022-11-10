@@ -28,4 +28,3 @@ def server_error(error):
 @login_required
 def dashboard():
     return render_template('dashboard.html')
-

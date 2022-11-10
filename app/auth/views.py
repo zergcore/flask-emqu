@@ -1,6 +1,6 @@
 from flask import render_template, session, flash, url_for, redirect
 from flask_login import login_user, login_required, logout_user
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
 from app.forms import LoginForm
 from . import auth
 from app.models import db, get_user, User
@@ -11,6 +11,21 @@ def login():
     context = {
         'login_form': login_form
     }
+    if login_form.validate_on_submit():
+        email = login_form.email.data
+        password = login_form.password.data
+        user_row=get_user(email)
+        if user_row:
+            password_from_db=user_row.password
+            if check_password_hash(password_from_db, password):
+                login_user(user_row)
+                flash('Welcome again!')
+                return redirect((url_for('dashboard')))
+            else:
+                flash('La informacion no coincide')
+        else:
+            flash('El usuario no existe')
+        return redirect(url_for('index'))
     return render_template('login.html', **context)
 
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -24,14 +39,20 @@ def signup():
         password= signup_form.password.data
         user_row=get_user(email)
         if user_row:
-            flash('El nombre de usuario ya existe')
+            flash('The email is already registered in our database.')
             return redirect(url_for('auth.signup'))
         else:
             new_user= User(email= email, password= generate_password_hash(password, method= 'sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            flash('Bienvenido(a)')
-            return redirect(url_for('hello'))
+            flash('Welcome to our platorm!')
+            return redirect(url_for('dashboard'))
         
     return render_template('signup.html', **context)
+
+@auth.route('/logout',  methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
