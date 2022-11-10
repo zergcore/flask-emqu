@@ -8,4 +8,11 @@
 
 {% block content %}
         <h3>Tu IP es {{user_ip}}</h3>
+        <ul class="list-group">
+            {% for user in users %}
+            <li>
+                {{ user.email }}
+            </li>
+            {% endfor %}
+        </ul>
 {% endblock %}
