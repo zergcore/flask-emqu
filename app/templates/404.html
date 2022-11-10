@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }}
+    404
+{% endblock %}
+
+{% block content %}
+    <h1>Sorry, we didn't find what you're looking for.</h1>
+    <h3>You could try to access to what you were looking through navigation bar</h3>
+    <p>{{error}}</p>
+{% endblock %}

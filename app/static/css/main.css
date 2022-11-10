@@ -1,0 +1,6 @@
+html *{
+    font-family: sans-serif;
+}
+.navbar-brand img {
+    max-width: 80px;
+}

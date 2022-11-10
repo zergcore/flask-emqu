@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}
+    {{ super() }}
+    Sign up
+{% endblock %}
+
+{% block content %}
+    <h1>Create your account</h1>
+    <div class="container">
+        {{ render_form(signup_form) }}
+    </div>
+    <small>Already have an account? <a href="{{url_for('auth.login')}}">Login</a></small>
+{% endblock %}

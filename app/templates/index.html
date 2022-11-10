@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}
+    {{ super() }}
+    Hello 
+{% endblock %}
+
+{% block content %}
+        <h3>Tu IP es {{user_ip}}</h3>
+{% endblock %}
