@@ -2,6 +2,7 @@ from re import I
 from flask import request, make_response, redirect, render_template, session, url_for, flash
 from app import create_app
 from app.models import get_users
+from flask_login import login_required, logout_user
 
 app=create_app()
 
@@ -22,3 +23,9 @@ def not_found(error):
 @app.errorhandler(500)
 def server_error(error):
     return render_template('500.html', error=error)
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
