@@ -19,4 +19,6 @@ def create_app():
     login_manager.init_app(app)
     app.register_blueprint(auth)
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
     return app
