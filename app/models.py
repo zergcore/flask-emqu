@@ -6,8 +6,8 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     __tablename__= 'Users'
     id= db.Column(db.Integer, primary_key= True, autoincrement= True)
-    email= db.Column(db.String(20), unique= True, nullable= False)
-    password= db.Column(db.String(50), nullable= False)
+    email= db.Column(db.String(30), unique= True, nullable= False)
+    password= db.Column(db.String(80), nullable= False)
 
 def get_user(email):
     # Consultar una persona

@@ -1,6 +1,7 @@
 from flask import render_template, session, flash, url_for, redirect
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash,check_password_hash
+
 from app.forms import LoginForm
 from . import auth
 from app.models import db, get_user, User
@@ -19,13 +20,15 @@ def login():
             password_from_db=user_row.password
             if check_password_hash(password_from_db, password):
                 login_user(user_row)
-                flash('Welcome again!')
+                flash('Welcome again!','success')
                 return redirect((url_for('dashboard')))
             else:
-                flash('La informacion no coincide')
+                flash("Info doesn't match", 'warning')
         else:
-            flash('El usuario no existe')
-        return redirect(url_for('index'))
+            flash("User doesn't exist, please try again, you may have some typo issues", 'warning')
+
+        return redirect(url_for('login.html'))
+
     return render_template('login.html', **context)
 
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -39,14 +42,13 @@ def signup():
         password= signup_form.password.data
         user_row=get_user(email)
         if user_row:
-            flash('The email is already registered in our database.')
-            return redirect(url_for('auth.signup'))
+            flash('The email is already registered in our database.', 'warning')
         else:
             new_user= User(email= email, password= generate_password_hash(password, method= 'sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            flash('Welcome to our platorm!')
+            flash('Welcome to our platorm!', 'success')
             return redirect(url_for('dashboard'))
         
     return render_template('signup.html', **context)
