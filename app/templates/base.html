@@ -18,26 +18,63 @@
             {% endblock %}
             </title>
 
+            <script src="https://kit.fontawesome.com/66a22bc443.js" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
-        {%block navbar%}
-            {% include 'navbar.html' %}
-        {% endblock %}  
+        {% if current_user.is_authenticated %}
+              
+            {%block asidebar%}
+                {% include 'aside-bar.html' %}
+            {% endblock %} 
 
-        {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-                <strong>{{ message }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-        {% endfor %}
-        
-        <!-- Your page content -->
+        {% else %}
+
+            {%block navbar%}
+                {% include 'navbar.html' %}
+            {% endblock %}  
+
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            <div class="container-fluid">
+
+        {% endif %}  
+        <!-- page content -->
         {% block content %}{% endblock %}
+            <!--Closes main-container or container-fluid -->
+            </div>
 
         {% block scripts %}
             <!-- Optional JavaScript -->
             {{ bootstrap.load_js() }}
+            
+            <script>
+                //MenuToggle
+                let toggle=document.querySelector('.menu-toggle');
+                let navigation=document.querySelector('.navigation');
+                let main = document.querySelector('.main-container');
+                toggle.onclick = function(){
+                    navigation.classList.toggle('active')
+                    main.classList.toggle('full')
+                }
+                //function navigationActive
+                //toggle.addEventListener('click', navigationActive)
+                //add hovered class in selected list item
+                let list = document.querySelectorAll('.navigation li');
+                function activeLink(){
+                    list.forEach((item)=>
+                    item.classList.remove('hovered'));
+                    this.classList.add('hovered');
+                }
+                list.forEach((item)=>
+                item.addEventListener('mouseover', activeLink));
+            </script>
+            
         {% endblock %}
     </body>
 </html>

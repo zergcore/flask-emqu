@@ -1,42 +1,75 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="{{url_for('static', filename='images/emqu.png')}}" alt="emqu-logo" width="80" height="24">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">
-                        Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="https://emqu.net" target="_blank">
-                        Emqu
-                    </a>
-                </li>
-                {% if current_user.is_authenticated %}
+<nav class="navbar navbar-expand-lg pt-0">
+    <!-- <div class="container-fluid"> -->
+        
+        {% if current_user.is_authenticated %}
+        <div class="container-fluid py-1">
+            <div class="col-md-2 text-start">
+                <div class="menu-toggle">
+                    <!-- <button class="btn btn-dark" type="button">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button> -->
+                    <i class="fa-solid fa-ellipsis-vertical text-warning"></i>
+                </div>
+            </div> 
+            <div class="col-md-7 text-start"></div> 
+            <div class="col-md-3 text-end">
+                <div class="collapse navbar-collapse mr-0" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 mr-0">
+                        <li class="nav-item">
+                            <!-- <a class="nav-link" href="{{url_for('auth.logout')}}">
+                                Logout
+                            </a> -->
+                            <a class="nav-link text-warning">
+                                {{user_id}}
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="text-end">
+                        <a href="#" class="d-block link-dark text-decoration-none">
+                          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a>
+                      </div>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars text-warning"></i>
+                </button>
+            </div>
+
+        {% else %}
+        <div class="container-fluid bg-warning py-1">
+            <a class="navbar-brand" href="#">
+                <img src="{{url_for('static', filename='images/emqu.png')}}" alt="emqu-logo" width="80" height="24">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars text-white"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('auth.logout')}}">
-                            Logout
+                        <a class="nav-link active text-white" aria-current="page" href="{{url_for('index')}}">
+                            Home
                         </a>
                     </li>
-                {% else %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('auth.login')}}">
+                        <a class="nav-link active text-white" href="https://emqu.net" target="_blank">
+                            Emqu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" aria-current="page" href="{{url_for('auth.login')}}">
                             Login
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('auth.signup')}}">
+                        <a class="nav-link active text-white" aria-current="page" href="{{url_for('auth.signup')}}">
                             Signup
                         </a>
                     </li>
-                {% endif %}
-            </ul>
-        </div>
+                </ul>
+            </div>
+        {% endif %}
+            
+            
+        
     </div>
   </nav>

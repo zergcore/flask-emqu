@@ -19,6 +19,7 @@ def login():
         if user_row:
             password_from_db=user_row.password
             if check_password_hash(password_from_db, password):
+                session["user_id"] = email
                 login_user(user_row)
                 flash('Welcome again!','success')
                 return redirect((url_for('dashboard')))
@@ -27,7 +28,7 @@ def login():
         else:
             flash("User doesn't exist, please try again, you may have some typo issues", 'warning')
 
-        return redirect(url_for('login.html'))
+        return redirect(url_for('auth.login'))
 
     return render_template('login.html', **context)
 
@@ -47,6 +48,7 @@ def signup():
             new_user= User(email= email, password= generate_password_hash(password, method= 'sha256'))
             db.session.add(new_user)
             db.session.commit()
+            session["user_id"] = email
             login_user(new_user)
             flash('Welcome to our platorm!', 'success')
             return redirect(url_for('dashboard'))

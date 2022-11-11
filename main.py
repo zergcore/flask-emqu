@@ -27,4 +27,8 @@ def server_error(error):
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    user_id=session['user_id']
+    context={
+        'user_id':user_id
+    }
+    return render_template('dashboard.html', **context)
