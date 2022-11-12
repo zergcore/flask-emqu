@@ -1,7 +1,8 @@
-flask
+flask[async]
 bootstrap-flask
 flask-wtf
 flask_sqlalchemy
 flask_login
 flask_bcrypt
+Werkzeug
 email_validator

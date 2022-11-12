@@ -9,5 +9,6 @@
         </span>
         {{ render_form(delete_form, action=url_for('delete', device_id=device.id)) }}
         {{ render_form(test_form, action=url_for('test', device_id=device.id, status=device.status)) }}
+        {{ render_form(test_form, action=url_for('test_ip', device_ipv4=device.ipv4)) }}
     </li>
 {% endmacro %}

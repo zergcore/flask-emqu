@@ -1,9 +1,10 @@
 from re import I
-from flask import request, make_response, redirect, render_template, session, url_for, flash
+from flask import request, make_response, redirect, render_template, session, url_for, flash, jsonify
 from app import create_app
 from app.models import get_users,get_user_devices, put_device, delete_device, test_device
 from flask_login import login_required, current_user
 from app.forms import DeviceForm, DeleteDeviceForm, TestDeviceForm
+from app.utils import verify_ping
 
 app=create_app()
 
@@ -70,3 +71,8 @@ def test(device_id, status):
     test_device(device_id=device_id, device_status=status)
 
     return redirect(url_for('devices'))
+
+@app.route("/devices/test/<device_ipv4>", methods=['POST'])
+async def test_ip(device_ipv4):
+    data = await verify_ping(device_ipv4)
+    return jsonify(data)

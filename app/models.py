@@ -36,7 +36,7 @@ def get_user_devices(email):
 
 def put_device(email, name, ipv4):
     user=get_user(email)
-    devices=len(Device.query.all())+1
+    devices=(Device.query.order_by(Device.id.desc()).first().id)+1
     d=Device(id=devices,name=name, ipv4=ipv4, status=True)
     user.devices.append(d)
     db.session.add(user)
