@@ -4,7 +4,7 @@ from app import create_app
 from app.models import get_users,get_user_devices, put_device, delete_device, test_device
 from flask_login import login_required, current_user
 from app.forms import DeviceForm, DeleteDeviceForm, TestDeviceForm
-from app.utils import verify_ping
+from app.utils import verify_ping, ping_host
 
 app=create_app()
 
@@ -75,4 +75,5 @@ def test(device_id, status):
 @app.route("/devices/test/<device_ipv4>", methods=['POST'])
 async def test_ip(device_ipv4):
     data = await verify_ping(device_ipv4)
+    data.update(await ping_host(device_ipv4))
     return jsonify(data)
