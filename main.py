@@ -2,7 +2,7 @@ from re import I
 from flask import request, redirect, render_template, session, url_for, flash
 from flask_login import login_required, current_user
 from app import create_app
-from app.models import get_users,get_user_devices, put_device, delete_device, test_device, get_devices_responses, get_device, put_response, get_device_responses, get_active_devices, get_inactive_devices, get_active_responses_per_device
+from app.models import get_users,get_user_devices, put_device, delete_device, test_device, get_devices_responses, get_device, put_response, get_device_responses, get_active_devices, get_inactive_devices, get_active_responses_per_device, get_last_device_responses
 from app.forms import DeviceForm, DeleteDeviceForm, TestDeviceForm
 from app.utils import verify_ping, ping_host
 
@@ -43,6 +43,7 @@ def devices():
     delete_form=DeleteDeviceForm()
     test_form=TestDeviceForm()
     devices=get_user_devices(user_id)
+    #last_responses=get_last_device_responses()
     context={
         'user_id':user_id,
         'devices':devices,

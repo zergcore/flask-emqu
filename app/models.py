@@ -73,14 +73,6 @@ def get_device_responses(device_id):
     return device.responses
 
 def get_devices_responses():
-    # responses = DeviceResponse.query.all()
-    # return responses
-    # userList = users.query\
-    #     .join(friendships, users.id==friendships.user_id)\
-    #     .add_columns(users.userId, users.name, users.email, friends.userId, friendId)\
-    #     .filter(users.id == friendships.friend_id)\
-    #     .filter(friendships.user_id == userID)\
-    #     .paginate(page, 1, False)
     responses=DeviceResponse.query\
         .join(Device, DeviceResponse.device_id==Device.id)\
         .add_columns(Device.name, Device.ipv4, DeviceResponse.avg_latency, DeviceResponse.min_latency, DeviceResponse.max_latency,DeviceResponse.response, DeviceResponse.status, DeviceResponse.created_at)\
@@ -89,9 +81,17 @@ def get_devices_responses():
     return responses
 
 def get_last_device_responses(device_id):
-    device=get_device(device_id)
-    responses=device.responses.order_by(responses.created_at.desc()).limit(3)
+    #device=get_device(device_id)
+    #responses=device.responses.order_by(responses.created_at.desc()).limit(3)
+
+    responses=DeviceResponse.query\
+        .join(Device, DeviceResponse.device_id==Device.id)\
+        .add_columns(Device.name, Device.ipv4, DeviceResponse.avg_latency, DeviceResponse.min_latency, DeviceResponse.max_latency,DeviceResponse.response, DeviceResponse.status, DeviceResponse.created_at)\
+        .order_by(DeviceResponse.created_at.desc())\
+        .filter_by(Device.id==device_id)\
+        .limit(3)
     return responses
+
 
 def put_response(device_id, response, avg, min, max, status):
     device=get_device(device_id)
