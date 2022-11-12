@@ -19,7 +19,6 @@ class User(db.Model, UserMixin):
     password= db.Column(db.String(80), nullable= False)
 
 def get_user(email):
-    # Consultar una persona
     user= User.query.filter_by(email=email).first()
     return user
 
@@ -38,8 +37,19 @@ def get_user_devices(email):
 def put_device(email, name, ipv4):
     user=get_user(email)
     devices=len(Device.query.all())+1
-    #devices=len(user.devices)+1
     d=Device(id=devices,name=name, ipv4=ipv4, status=True)
     user.devices.append(d)
     db.session.add(user)
+    db.session.commit()
+
+def delete_device(user_id, device_id):
+    user=User.query.filter_by(id=user_id).first()
+    device=Device.query.with_parent(user).filter_by(id=device_id).first()
+    db.session.delete(device)
+    db.session.commit()
+
+def test_device(device_id, device_status):
+    test= not bool(device_status)
+    device=Device.query.filter_by(id=device_id).first()
+    device.status = test
     db.session.commit()

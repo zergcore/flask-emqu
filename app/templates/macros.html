@@ -1,7 +1,13 @@
 {% from 'bootstrap5/form.html' import render_form %}
 
-{% macro render_device(device) %}
+{% macro render_device(device, delete_form, test_form) %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
         Name: {{ device.name }}
+        IPv4: {{ device.ipv4 }}
+        <span class="badge bg-primary rounded-pill">
+            {{ device.status }}
+        </span>
+        {{ render_form(delete_form, action=url_for('delete', device_id=device.id)) }}
+        {{ render_form(test_form, action=url_for('test', device_id=device.id, status=device.status)) }}
     </li>
 {% endmacro %}

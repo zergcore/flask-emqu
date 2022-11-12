@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, IPAddress
 
 class LoginForm(FlaskForm):
@@ -9,7 +9,7 @@ class LoginForm(FlaskForm):
 
 class DeviceForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(),Length(4,45)])
-    ipv4 = StringField('IPv4 Address', validators=[DataRequired(), IPAddress(ipv4=True)])
+    ipv4 = StringField('IPv4 Address', validators=[DataRequired(), IPAddress(ipv4=True)], render_kw={'placeholder': '255.255.255.255'})
     submit = SubmitField('Create')
 
 class DeleteDeviceForm(FlaskForm):

@@ -12,14 +12,13 @@
     {%endif%}
 
     <div class="container">
-        <h2>Create a new device to Test</h2>
-
+        <h2>Create devices to test</h2>
         {{ render_form(device_form) }}
     </div>
 
     <ul class="list-group">
         {% for device in devices %}
-            {{ macros.render_device(device) }}
+            {{ macros.render_device(device, delete_form, test_form) }}
         {% endfor %}
     </ul>
 
