@@ -1,7 +1,7 @@
 from re import I
 from flask import request, make_response, redirect, render_template, session, url_for, flash, jsonify
 from app import create_app
-from app.models import get_users,get_user_devices, put_device, delete_device, test_device
+from app.models import get_users,get_user_devices, put_device, delete_device, test_device, get_devices_responses, get_device, put_response, get_device_responses
 from flask_login import login_required, current_user
 from app.forms import DeviceForm, DeleteDeviceForm, TestDeviceForm
 from app.utils import verify_ping, ping_host
@@ -53,7 +53,7 @@ def devices():
 
     if device_form.validate_on_submit():
         put_device(email=user_id, name=device_form.name.data, ipv4=device_form.ipv4.data)
-        flash('Your task was created successfully!', 'success')
+        flash('Your device was created successfully!', 'success')
         return redirect(url_for('devices'))  
 
     return render_template('devices.html', **context)
@@ -61,19 +61,35 @@ def devices():
 @app.route('/devices/delete/<device_id>', methods=['POST'])
 def delete(device_id):
     user_id = current_user.id
-    delete_device(user_id=user_id, device_id=device_id)
+    responses=get_device_responses(device_id)
+    if len(responses):
+        flash('You have done tests to this device, now you cannot delete it', 'danger')
+        return redirect(url_for('devices'))
+    else:
+        delete_device(user_id=user_id, device_id=device_id)
 
     return redirect(url_for('devices'))
 
-@app.route('/devices/test/<device_id>/<int:status>', methods=['POST'])
-def test(device_id, status):
+@app.route('/devices/test/<device_id>', methods=['POST'])
+async def test(device_id):
 
-    test_device(device_id=device_id, device_status=status)
-
+    device=get_device(device_id)
+    data = await verify_ping(device.ipv4)
+    data.update(await ping_host(device.ipv4))
+    status=data['response']==0 
+    test_device(device_id, status)
+    put_response(device_id,data['response'],data['avg_latency'],data['min_latency'],data['max_latency'],status)
+    flash('Test made successfully, please go to stadistics so you can see the details', 'success')
     return redirect(url_for('devices'))
 
-@app.route("/devices/test/<device_ipv4>", methods=['POST'])
-async def test_ip(device_ipv4):
-    data = await verify_ping(device_ipv4)
-    data.update(await ping_host(device_ipv4))
-    return jsonify(data)
+@app.route('/stadistics', methods=['GET', 'POST'])
+@login_required
+def stadistics():
+    user_id=session['user_id']
+    responses=get_devices_responses()
+    context={
+        'user_id':user_id,
+        'responses':responses,
+    }
+
+    return render_template('stadistics.html', **context)

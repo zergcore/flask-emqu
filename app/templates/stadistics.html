@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}
+    {{ super() }}
+    Stadistics
+{% endblock %}
+
+{% block content %}
+    {%if user_id%}
+    <h1>Welcome {{userid}}</h1>
+    <p>Here you will be able to check the history of the tests you made</p>
+    {%endif%}
+
+    <div class="container">
+        <ul class="list-group">
+            {% for response in responses %}
+                {{ macros.render_responses(response)}}
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
