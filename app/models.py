@@ -31,13 +31,14 @@ def get_user_id(email):
     current_user=get_user(email)
     return current_user.id
 
-def get_devices(email):
+def get_user_devices(email):
     user=get_user(email)
     return user.devices
 
 def put_device(email, name, ipv4):
     user=get_user(email)
-    devices=len(user.devices)+1
+    devices=len(Device.query.all())+1
+    #devices=len(user.devices)+1
     d=Device(id=devices,name=name, ipv4=ipv4, status=True)
     user.devices.append(d)
     db.session.add(user)

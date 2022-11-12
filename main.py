@@ -1,7 +1,7 @@
 from re import I
 from flask import request, make_response, redirect, render_template, session, url_for, flash
 from app import create_app
-from app.models import get_users,get_devices, put_device
+from app.models import get_users,get_user_devices, put_device
 from flask_login import login_required, logout_user
 from app.forms import DeviceForm
 
@@ -39,7 +39,7 @@ def dashboard():
 def devices():
     user_id=session['user_id']
     device_form=DeviceForm()
-    devices=get_devices(user_id)
+    devices=get_user_devices(user_id)
     context={
         'user_id':user_id,
         'devices':devices,
