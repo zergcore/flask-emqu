@@ -1,0 +1,7 @@
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% macro render_device(device) %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Name: {{ device.name }}
+    </li>
+{% endmacro %}

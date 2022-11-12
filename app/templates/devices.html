@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}
+    {{ super() }}
+    Devices
+{% endblock %}
+
+{% block content %}
+    {%if user_id%}
+    <h1>Welcome {{userid}}</h1>
+    {%endif%}
+
+    <div class="container">
+        <h2>Create a new device to Test</h2>
+
+        {{ render_form(device_form) }}
+    </div>
+
+    <ul class="list-group">
+        {% for device in devices %}
+            {{ macros.render_device(device) }}
+        {% endfor %}
+    </ul>
+
+{% endblock %}
