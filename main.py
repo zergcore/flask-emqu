@@ -1,8 +1,8 @@
 from re import I
-from flask import request, make_response, redirect, render_template, session, url_for, flash, jsonify
-from app import create_app
-from app.models import get_users,get_user_devices, put_device, delete_device, test_device, get_devices_responses, get_device, put_response, get_device_responses
+from flask import request, redirect, render_template, session, url_for, flash
 from flask_login import login_required, current_user
+from app import create_app
+from app.models import get_users,get_user_devices, put_device, delete_device, test_device, get_devices_responses, get_device, put_response, get_device_responses, get_active_devices, get_inactive_devices, get_active_responses_per_device
 from app.forms import DeviceForm, DeleteDeviceForm, TestDeviceForm
 from app.utils import verify_ping, ping_host
 
@@ -87,9 +87,16 @@ async def test(device_id):
 def stadistics():
     user_id=session['user_id']
     responses=get_devices_responses()
+    data_active_inactive=[len(get_active_devices()), len(get_inactive_devices())]
+    data_active_responses=get_active_responses_per_device()
+    active_devices=data_active_responses.keys()
+    active_data=data_active_responses.values()
     context={
         'user_id':user_id,
         'responses':responses,
+        'data_active_inactive':data_active_inactive,
+        'active_devices': active_devices,
+        'active_data': active_data
     }
 
     return render_template('stadistics.html', **context)

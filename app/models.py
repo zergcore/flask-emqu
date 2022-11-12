@@ -48,7 +48,7 @@ def get_user_devices(email):
 
 def put_device(email, name, ipv4):
     user=get_user(email)
-    d=Device(name=name, ipv4=ipv4, status=True)
+    d=Device(name=name, ipv4=ipv4)
     user.devices.append(d)
     db.session.add(user)
     db.session.commit()
@@ -99,3 +99,19 @@ def put_response(device_id, response, avg, min, max, status):
     device.responses.append(response)
     db.session.add(device)
     db.session.commit()
+
+def get_active_devices():
+    active=Device.query.filter_by(status=True).all()
+    return active
+
+def get_inactive_devices():
+    inactive=Device.query.filter_by(status=False).all()
+    return inactive
+
+def get_active_responses_per_device():
+    devices=Device.query.all()
+    active_responses={}
+    for device in devices:
+        active=db.session.query(DeviceResponse).filter_by(device_id=device.id).filter_by(status=True).count()
+        active_responses[device.name]=active
+    return active_responses

@@ -52,7 +52,6 @@
         {% block scripts %}
             <!-- Optional JavaScript -->
             {{ bootstrap.load_js() }}
-            
             <script>
                 //MenuToggle
                 let toggle=document.querySelector('.menu-toggle');
@@ -62,9 +61,7 @@
                     navigation.classList.toggle('active')
                     main.classList.toggle('full')
                 }
-                //function navigationActive
-                //toggle.addEventListener('click', navigationActive)
-                //add hovered class in selected list item
+                
                 let list = document.querySelectorAll('.navigation li');
                 function activeLink(){
                     list.forEach((item)=>

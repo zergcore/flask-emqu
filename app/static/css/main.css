@@ -1,8 +1,8 @@
-*{
-    /* margin:0; */
-    /* padding: 0; */
-    /* box-sizing: border-box; */
-}
+/* *{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+} */
 body{
     min-height: 100vh;
     overflow-x: hidden;
@@ -145,7 +145,40 @@ body{
     color: goldenrod;
 }
 
-.navbar{
-    color: goldenrod;
+/* charts */
+.graphBox{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 30px;
+    min-height: 200px;
 }
+.graphBox .box{
+    position: relative;
+    background: whitesmoke;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+
+@media (max-width: 991px){
+    .graphBox{
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+.container .box{
+    position: relative;
+    background: whitesmoke;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+
+
 

@@ -13,11 +13,43 @@
     {%endif%}
 
     <div class="container">
-        <ul class="list-group">
-            {% for response in responses %}
-                {{ macros.render_responses(response)}}
-            {% endfor %}
-        </ul>
+        {%block charts%}
+                {% include 'charts.html' %}
+        {% endblock %}  
     </div>
 
+    <div class="container">
+        <div class="box">
+            <h2>Historical Report of Testing Devices</h2>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">IPv4</th>
+                    <th scope="col">Avg Latency</th>
+                    <th scope="col">Min Latency</th>
+                    <th scope="col">Max Latency</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Tested at</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for response in responses %}
+                        {{ macros.render_responses(response)}}
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts%}
+    {{ super() }}
+    <script>
+        const active = {{data_active_inactive[0]}};
+        const inactive = {{data_active_inactive[1]}};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="{{url_for('static', filename='js/my_chart.js')}}"></script>
 {% endblock %}
