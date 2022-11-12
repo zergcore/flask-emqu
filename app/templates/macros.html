@@ -1,24 +1,52 @@
 {% from 'bootstrap5/form.html' import render_form %}
 
 {% macro render_device(device, delete_form, test_form) %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Name: {{ device.name }}
-        IPv4: {{ device.ipv4 }}
 
-        {% if device.status %}
-            <span class="badge bg-primary rounded-pill">
-                active
-            </span>
-        {% else %}
-            <span class="badge bg-secondary rounded-pill">
-                inactive
-            </span>
-        {% endif %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading{{device.id}}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{device.id}}" aria-expanded="false" aria-controls="flush-collapse{{device.id}}">
+            <div class="container text-center">
+                <div class="row">
+                  <div class="col">
+                    {{ device.name }}
+                  </div>
+                  <div class="col">
+                    {{ device.ipv4 }}
+                  </div>
+                  <div class="col">
+                    
+                    {% if device.status %}
+                        <span class="badge bg-primary rounded-pill">
+                            active
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary rounded-pill">
+                            inactive
+                        </span>
+                    {% endif %}
 
-        {{ render_form(delete_form, action=url_for('delete', device_id=device.id)) }}
+                  </div>
+                </div>
+              </div>
+          </button>
+        </h2>
+        <div id="flush-collapse{{device.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{device.id}}" data-bs-parent="#accordionFlush">
+          <div class="accordion-body">
+            <div class="container text-center">
+                <div class="row">
+                  <div class="col">
+                    {{ render_form(delete_form, action=url_for('delete', device_id=device.id)) }}
+                  </div>
+                  <div class="col">
+                    {{ render_form(test_form, action=url_for('test', device_id=device.id)) }}
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+        </div>
+      </div>
 
-        {{ render_form(test_form, action=url_for('test', device_id=device.id)) }}
-    </li>
 {% endmacro %}
 
 {% macro render_responses(response) %}
